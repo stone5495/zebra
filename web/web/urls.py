@@ -11,7 +11,6 @@ urlpatterns = [
     url(r'^login/$', 'account.views.login'),
     url(r'^logout/$', 'account.views.logout'),
     url(r'^send/validation/code/$', 'account.views.send_validation_code'),
-
     url(r'^profile/$', 'account.views.profile'),
 
 ]

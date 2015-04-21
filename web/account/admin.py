@@ -1,3 +1,7 @@
+#coding=utf-8
 from django.contrib import admin
+from models import ValidationCode, PhoneUserProfile
 
-# Register your models here.
+
+admin.site.register(ValidationCode)
+admin.site.register(PhoneUserProfile)
