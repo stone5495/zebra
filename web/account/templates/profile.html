@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>斑马搜索 &middot; 个人中心</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <div class="form-inline">
+    <input class="form-control" id="input_phone" name="phone" value="{{ phone }}" placeholder="手机号" disabled="disabled">
+    <input class="form-control" id="input_nickname" name="nickname" value="{{ nickname }}" placeholder="昵称">
+    <input class="form-control" id="input_qq" name="qq" value="{{ qq }}" placeholder="QQ">
+
+    <button type="submit" class="btn btn-primary">修改</button>
+  </div>
+</form>
+
+</div>
+
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+
+<script>
+
+$(function() {
+  
+});
+
+</script>
+
+
+</body>
+
+</html>

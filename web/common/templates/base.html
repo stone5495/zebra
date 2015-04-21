@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>上海钢铁交易中心 &middot; {% block title %} {% endblock %}</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+</head>
+
+<body data-spy="scroll" data-target="#scroll_spy">
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">上海钢铁交易中心</a>
+    </div>
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">捆包</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#">登录</a></li>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid">
+
+{% block content %}{% endblock %} 
+
+</div>
+
+<div style="width: 100%; height: 100px;"></div>
+
+
+<nav class="navbar navbar-fixed-bottom" style="background: white; border-top: 1px solid #ded; padding-top: 3px;">
+    <div class="container-fluid">
+      <span class="label label-default">所有 <i class="glyphicon glyphicon-remove"></i></span>
+
+      <div class="input-group input-group-lg" style="margin-top: 5px;">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button">
+            <i class="glyphicon glyphicon-option-vertical"></i>
+          </button>
+        </span>
+        <input type="text" class="form-control" placeholder="{% block search_placeholder %}{% endblock %}">
+        <span class="input-group-btn">
+          <button class="btn btn-default btn-success" type="button">
+            <i class="glyphicon glyphicon-search"></i>
+          </button>
+        </span>
+      </div>
+    </div>
+    <div class="text-center small">
+        &copy;上海钢铁交易中心有限公司 2015
+        上海宝山区双城路803弄9号楼30层
+        200940
+        沪ICP备13004465号-6
+    </div>
+</nav>
+
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

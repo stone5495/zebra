@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>斑马搜索 &middot; 登录</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+{% if error %}
+
+<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  {{ error }}
+</div>
+
+{% endif %}
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <div class="form-inline">
+    <input class="form-control" id="input_phone" name="phone" value="{{ phone }}" placeholder="手机号">
+    <button type="button" id="btn_send_validation_code" class="btn btn-primary">发送验证码</button>
+    <input class="form-control" name="validation_code" placeholder="验证码">
+    <input type="hidden" name="next" value="{{ redirect_to }}">
+
+    <button type="submit" class="btn btn-primary">登录</button>
+  </div>
+</form>
+
+</div>
+
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+
+<script>
+
+$(function() {
+  $('#btn_send_validation_code').click(function () {
+
+    var url = '/send/validation/code?phone=' + $('#input_phone').val();
+
+    $.get(url).error(function (err) {
+        alert(err.responseText);
+    });
+  });
+});
+
+</script>
+
+
+</body>
+
+</html>
