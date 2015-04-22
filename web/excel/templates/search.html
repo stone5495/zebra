@@ -1,0 +1,86 @@
+{% load until_now %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>斑马搜索 &middot; 搜索</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="input-group input-group-lg" >
+    <form action="" class="navbar-form navbar-left">
+
+    <input type="text" style="width: 600px;" class="form-control" name="q" value="{{ q }}" placeholder="品种，牌号，规格，钢厂">
+    <span class="input-group-btn">
+      <button class="btn btn-default btn-success" type="submit">
+        <i class="glyphicon glyphicon-search"></i>
+      </button>
+    </span>
+
+    </form>
+  </div>
+</nav>
+
+<div class="container-fluid">
+
+<div class="row">
+<div class="col col-md-10">
+
+{% for excel in search_result %}
+
+<h3>
+  <a href="/download/{{ excel.excel.id }}">{{ excel.excel.name }}</a>
+  <small>
+    {{ excel.excel.time | until_now }}
+    {{ excel.excel.phone }}
+    {% if excel.excel.nickname %}({{ excel.excel.nickname }}){% endif %}
+  </small>
+</h3>
+
+<table class="table table-bordered table-striped">
+  {% for row in excel.rows %}
+  <tr>
+      <td><a href="/detail/{{excel.excel.id}}/#sheet_0_{{row.row}}">第{{ row.row }}行</a></td>
+      {% for cell in row.cell %}
+      <td>{{ cell }}</td>
+      {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+
+<a href="/detail/{{ excel.excel.id }}">详细...</a>
+<hr />
+
+{% endfor %}
+
+</div>
+
+<div class="col col-md-2">
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="text-center small">
+    &copy;上海钢铁交易中心有限公司 2015
+    上海宝山区双城路803弄9号楼30层
+    200940
+    沪ICP备13004465号-6
+</div>
+
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

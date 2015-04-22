@@ -1,0 +1,68 @@
+{% load until_now %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>斑马搜索 &middot; {{ name }}</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+  <h3 class="page-header">
+    <a href="/download/{{ id }}">{{ name }}</a>
+    <small>
+      {{ time | until_now }}
+      {{ phone }}
+      {% if nickname %}({{ nickname }}){% endif %}
+    </small>
+  </h3>
+
+  <ul class="nav nav-tabs" role="tablist">
+    {% for sheet in sheets %}
+    <li role="presentation" {% if sheet.num == 0 %} class="active" {% endif %}>
+      <a href="#sheet_{{sheet.num}}" role="tab" data-toggle="tab">{{ sheet.name }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <br />
+
+  <div class="tab-content">
+    {% for sheet in sheets %}
+    <div role="tabpanel" class="tab-pane {% if sheet.num == 0 %}active{% endif %}" id="sheet_{{sheet.num}}">
+      <table class="table table-striped table-bordered table-hover">
+        {% for row in sheet.rows %}
+        <tr id="sheet_{{sheet.num}}_{{row.line}}">
+          <td>第{{ row.line }}行</td>
+          {% for cell in row.cells %}
+          <td>{{ cell }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+
+<script>
+
+$(function() {
+  
+});
+
+</script>
+
+
+</body>
+
+</html>

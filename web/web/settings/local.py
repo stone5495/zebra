@@ -40,6 +40,7 @@ INSTALLED_APPS = (
 
     'common',
     'account',
+    'excel',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -110,3 +111,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'account.backends.SmsBackend',
 )
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+ES_SERVER = '127.0.0.1:9200'

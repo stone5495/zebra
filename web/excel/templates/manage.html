@@ -1,0 +1,61 @@
+{% load until_now %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>斑马搜索 &middot; 资源单管理</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+<form action="/upload/" class="form-inline" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input class="form-control" type="file" name="excel_file">
+  <input class="form-control btn-primary" type="submit" value="上传资源单">
+</form>
+
+<br />
+
+<table class="table table-striped table-hover">
+
+{% for excel in indexed_excels %}
+<tr class="success">
+  <td>{{ excel.create_time | until_now }}</td>
+  <td><a href="/detail/{{excel.id}}/">{{ excel.name }}</a></td>
+  <td><a href="/unindex/{{excel.id}}/">隐藏</a></td>
+</tr>
+{% endfor %}
+
+{% for excel in unindexed_excels %}
+<tr>
+  <td>{{ excel.create_time | until_now }}</td>
+  <td><a href="/detail/{{excel.id}}/">{{ excel.name }}</a></td>
+  <td><a href="/index/{{excel.id}}/">索引</a></td>
+</tr>
+{% endfor %}
+
+</table>
+
+</div>
+
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+
+<script>
+
+$(function() {
+  
+});
+
+</script>
+
+
+</body>
+
+</html>
