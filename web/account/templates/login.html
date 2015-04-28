@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>斑马搜索 &middot; 登录</title>
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/base.css" rel="stylesheet">
-</head>
+{% extends 'base.html' %}
+{% load until_now %}
 
-<body>
+{% block title %}登录{% endblock %}
 
-<div class="container">
+{% block content %}
 
 {% if error %}
 
@@ -32,13 +26,9 @@
   </div>
 </form>
 
-</div>
+{% endblock %}
 
-
-<script src="/static/js/jquery.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-
-<script>
+{% block script %}
 
 $(function() {
   $('#btn_send_validation_code').click(function () {
@@ -51,9 +41,4 @@ $(function() {
   });
 });
 
-</script>
-
-
-</body>
-
-</html>
+{% endblock %}

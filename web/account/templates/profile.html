@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>斑马搜索 &middot; 个人中心</title>
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/base.css" rel="stylesheet">
-</head>
+{% extends 'base.html' %}
+{% load until_now %}
 
-<body>
+{% block title %}个人资料{% endblock %}
 
-<div class="container">
+{% block content %}
 
 <form action="" method="POST">
   {% csrf_token %}
@@ -22,21 +16,4 @@
   </div>
 </form>
 
-</div>
-
-
-<script src="/static/js/jquery.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-
-<script>
-
-$(function() {
-  
-});
-
-</script>
-
-
-</body>
-
-</html>
+{% endblock %}

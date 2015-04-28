@@ -1,17 +1,9 @@
+{% extends 'base.html' %}
 {% load until_now %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>斑马搜索 &middot; 资源单管理</title>
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/base.css" rel="stylesheet">
-</head>
+{% block title %}资源单管理{% endblock %}
 
-<body>
-
-<div class="container">
+{% block content %}
 
 <form action="/upload/" class="form-inline" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
@@ -41,21 +33,4 @@
 
 </table>
 
-</div>
-
-
-<script src="/static/js/jquery.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-
-<script>
-
-$(function() {
-  
-});
-
-</script>
-
-
-</body>
-
-</html>
+{% endblock %}
