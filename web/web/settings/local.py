@@ -116,3 +116,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 ES_SERVER = '127.0.0.1:9200'
+CRAWL_ROOT = os.path.join(BASE_DIR, 'crawl')
+
+REDIS_SERVER = '127.0.0.1'
