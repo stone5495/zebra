@@ -82,19 +82,7 @@ def upload(request):
     return HttpResponseRedirect('/index/%d'%excel.id)
 
 
-@login_required
-def index(request, excel_id):
-    try:
-        excel = Excel.objects.get(id=excel_id)
-    except Excel.DoesNotExist:
-        return HttpResponse(u'Excel不存在', status=404)
-
-    if request.user != excel.user:
-        return HttpResponse(u'Excel不属于你', status=401)        
-
-    if excel.status == 1:
-        return HttpResponse(u'已经索引过了', status=403)
-
+def index_excel(excel):
     wb = xlrd.open_workbook(excel.excel_file.file.name)
 
     doc = es.index('excel', 'excel_file', {
@@ -103,7 +91,7 @@ def index(request, excel_id):
         'time': excel.create_time,
         'phone': excel.user.phoneuserprofile.phone,
         'nickname': excel.user.phoneuserprofile.nickname,
-    }, id=excel_id)
+    }, id=excel.id)
 
     for sheet_index in range(wb.nsheets):
         sheet = wb.sheet_by_index(sheet_index)
@@ -130,6 +118,22 @@ def index(request, excel_id):
 
     excel.status = 1
     excel.save()
+
+
+@login_required
+def index(request, excel_id):
+    try:
+        excel = Excel.objects.get(id=excel_id)
+    except Excel.DoesNotExist:
+        return HttpResponse(u'Excel不存在', status=404)
+
+    if request.user != excel.user:
+        return HttpResponse(u'Excel不属于你', status=401)        
+
+    if excel.status == 1:
+        return HttpResponse(u'已经索引过了', status=403)
+
+    index_excel(excel)
     return HttpResponseRedirect('/manage/')
 
 

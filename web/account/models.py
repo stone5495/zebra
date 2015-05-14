@@ -19,3 +19,5 @@ class PhoneUserProfile(models.Model):
     
     qq = models.CharField(max_length=20)
     nickname = models.CharField(max_length=20)
+
+    status = models.IntegerField()

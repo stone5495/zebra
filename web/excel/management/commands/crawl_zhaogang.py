@@ -9,6 +9,8 @@ from pyquery.pyquery import PyQuery as pq
 import os, datetime, time
 import requests, urllib, redis
 
+from excel.models import CrawlExcel
+
 
 url = 'http://zyd.zhaogang.com/ziyuan.html'
 download_url = 'http://zyddownload.zhaogang.com/Ajax/DownLoad/ZydDownLoad.ashx?callback=?&PKID=%s'
@@ -37,16 +39,13 @@ class Command(BaseCommand):
             os.mkdir(zhaogang_dir)
             print '新建目录: %s' % zhaogang_dir
 
-        update_file = os.path.join(zhaogang_dir, '.update')
-        uf = file(update_file, 'a')
-        uf.write('%lf'%time.time())
-        uf.write('\n')
 
         driver.get(url)
         time.sleep(2)
         q = pq(driver.page_source)
         pages = int(q('.total').text()[1:-1])
         print '一共%d页' % pages
+
 
         for page in range(1, pages+1):
             driver.get(url+'?p=%d'%page)
@@ -57,9 +56,8 @@ class Command(BaseCommand):
 
             for _ in q[1:]:
                 excel_id = pq(pq(_).find('a')[-2]).attr('vals')
-                lock_file = os.path.join(zhaogang_dir, '.'+excel_id)
 
-                if os.path.exists(lock_file):
+                if CrawlExcel.objects.filter(source=1, source_id=excel_id).exists():
                     continue
 
                 try:
@@ -76,18 +74,17 @@ class Command(BaseCommand):
                         f.write(block)
                     f.close()
 
-                    lf = open(lock_file, 'w')
-                    lf.write(file_name)
-                    lf.close()
-
-                    uf.write(excel_id)
-                    uf.write(' ')
+                    CrawlExcel.objects.create(
+                        create_time=time.time(),
+                        source=1,
+                        source_id=excel_id,
+                        filepath=file_path,
+                        imported=False
+                    )
 
                 except Exception as e:
                     print '错误: [%s]' % excel_id
                     import traceback
                     traceback.print_exc()
 
-        uf.write('\n')
-        uf.close()
 

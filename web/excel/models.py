@@ -19,3 +19,13 @@ class Record(models.Model):
     excel = models.ForeignKey(Excel)
     query = models.CharField(max_length=100)
     download = models.BooleanField()
+
+
+class CrawlExcel(models.Model):
+    create_time = models.FloatField()
+
+    source = models.IntegerField()
+    source_id = models.CharField(max_length=50)
+    filepath = models.CharField(max_length=255)
+
+    imported = models.BooleanField()
