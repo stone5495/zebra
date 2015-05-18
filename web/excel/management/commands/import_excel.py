@@ -32,7 +32,7 @@ class Command(BaseCommand):
             )
             print '系统用户已生成'
 
-        crawl_excels = CrawlExcel.objects.filter(source=1, imported=False)
+        crawl_excels = CrawlExcel.objects.filter(imported=False)
 
         for crawl_excel in crawl_excels:
             excel = Excel.objects.create(

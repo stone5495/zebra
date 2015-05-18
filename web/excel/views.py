@@ -137,6 +137,21 @@ def index(request, excel_id):
     return HttpResponseRedirect('/manage/')
 
 
+def unindex_excel(excel):
+    es.delete_by_query('excel', 'row_data', {
+        'query': {
+            'term': {
+                'parent': excel.id
+            }
+        }
+    })
+
+    es.delete('excel', 'excel_file', id=excel.id)
+
+    excel.status = 0
+    excel.save()
+
+
 @login_required
 def unindex(request, excel_id):
     try:
@@ -150,19 +165,7 @@ def unindex(request, excel_id):
     if excel.status == 0:
         return HttpResponse(u'本来就不在索引中', status=403)
 
-    es.delete_by_query('excel', 'row_data', {
-        'query': {
-            'term': {
-                'parent': excel_id
-            }
-        }
-    })
-
-    es.delete('excel', 'excel_file', id=excel_id)
-
-    excel.status = 0
-    excel.save()
-
+    unindex_excel(excel)
     return HttpResponseRedirect('/manage/')
 
 
