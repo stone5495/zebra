@@ -42,8 +42,9 @@ class Command(BaseCommand):
         driver.get(url)
         time.sleep(2)
         q = pq(driver.page_source)
-        pages = q('.page').text()[25:33]
-        pages = int(filter(lambda x: x in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'], pages))
+        pages = q('.page').text()
+        import re
+        pages = int(re.match(u'.*共\s*(\d+)\s*页', pages).groups()[0])
 
         print '一共%d页' % pages
 
