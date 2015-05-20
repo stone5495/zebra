@@ -33,6 +33,7 @@ class Command(BaseCommand):
             print '系统用户已生成'
 
         crawl_excels = CrawlExcel.objects.filter(imported=False)
+        print '%s 个excel需要导入' % crawl_excels.count()
 
         for crawl_excel in crawl_excels:
             excel = Excel.objects.create(
@@ -44,9 +45,9 @@ class Command(BaseCommand):
             )
             try:
                 index_excel(excel)
-                print 'indexed %s'%excel.name
+                print 'indexed %s'%excel.id
             except:
-                print 'wrong %s'%excel.name
+                print 'wrong %s'%excel.id
 
             crawl_excel.imported = True
             crawl_excel.save()
