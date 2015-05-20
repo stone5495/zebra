@@ -23,6 +23,7 @@ class Record(models.Model):
 
 class CrawlExcel(models.Model):
     create_time = models.FloatField()
+    crawl_user = models.ForeignKey(User)
 
     source = models.IntegerField()
     source_id = models.CharField(max_length=50)

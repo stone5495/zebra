@@ -10,6 +10,8 @@ import os, datetime, time
 import requests, urllib, redis
 
 from excel.models import CrawlExcel
+from account.models import PhoneUserProfile
+from django.contrib.auth.models import User
 
 
 url = 'http://zy.banksteel.com/?bi=&bd=&ci=&cy=&br=&kw=&st=6&'
@@ -38,6 +40,19 @@ class Command(BaseCommand):
         if not os.path.exists(gangyin_dir):
             os.mkdir(gangyin_dir)
             print '新建目录: %s' % gangyin_dir
+
+        try:
+            profile = PhoneUserProfile.objects.get(nickname=u'钢银资源单', status=2)
+        except PhoneUserProfile.DoesNotExist:
+            user = User.objects.create_user('__steelbank', '__steelbank')
+            profile = PhoneUserProfile.objects.create(
+                user=user,
+                phone='-',
+                qq='-',
+                nickname=u'钢银资源单',
+                status=2
+            )
+            print '系统用户已生成'
 
         driver.get(url)
         time.sleep(2)
@@ -81,6 +96,7 @@ class Command(BaseCommand):
 
                     CrawlExcel.objects.create(
                         create_time=time.time(),
+                        crawl_user=profile.user,
                         source=2,
                         source_id=excel_id,
                         filepath=file_path,

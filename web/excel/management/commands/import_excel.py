@@ -17,28 +17,15 @@ from excel.models import CrawlExcel
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
-        print '开始导入找钢网资源单...'
-
-        try:
-            profile = PhoneUserProfile.objects.get(nickname=u'找钢网资源单', status=2)
-        except PhoneUserProfile.DoesNotExist:
-            user = User.objects.create_user('__zhaogang', '__zhaogang')
-            profile = PhoneUserProfile.objects.create(
-                user=user,
-                phone='-',
-                qq='-',
-                nickname=u'找钢网资源单',
-                status=2
-            )
-            print '系统用户已生成'
+        print '开始导入资源单...'
 
         crawl_excels = CrawlExcel.objects.filter(imported=False)
         print '%s 个excel需要导入' % crawl_excels.count()
 
         for crawl_excel in crawl_excels:
             excel = Excel.objects.create(
-                create_time = time.time(),
-                user = profile.user,
+                create_time = crawl_excel.create_time,
+                user = crawl_excel.crawl_user,
                 name = os.path.basename(crawl_excel.filepath),
                 status = 0,
                 excel_file = File(file(crawl_excel.filepath))

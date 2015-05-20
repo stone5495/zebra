@@ -25,7 +25,13 @@ def search(request):
             "query_string": {
                 "query": q
             }
-        }
+        },
+        "sort": [
+            "_score",
+            {
+                "time": "desc"
+            }
+        ]
     }
 
     while len(hits) < target_end:
@@ -111,7 +117,9 @@ def index_excel(excel):
 
             es.index('excel', 'row_data', {
                 'parent': doc['_id'],
+                'time': excel.create_time,
                 'sheet': sheet_index,
+                'sheet_name': sheet.name,
                 'row': row_index,
                 'cell': values
             }, parent=doc['_id'])
