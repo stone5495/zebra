@@ -9,19 +9,21 @@ from pyquery.pyquery import PyQuery as pq
 import os, datetime, time
 import requests, urllib, redis
 
+
 from excel.models import CrawlExcel
 from account.models import PhoneUserProfile
 from django.contrib.auth.models import User
 
 
-url = 'http://zy.banksteel.com/?bi=&bd=&ci=&cy=&br=&kw=&st=6&'
-download_url = 'http://zy.banksteel.com/d/%s'
+url = 'http://b2b.mysteel.com/quotation/p-----------------------------1---1.html'
+download_url = 'http://i.sososteel.com/d/%s'
+url_page = 'http://b2b.mysteel.com/quotation/p-----------------------------1---'
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
-        print '开始下载钢银网资源单...'
+        print '开始下载搜搜钢资源单...'
         driver = webdriver.PhantomJS()
 
         if not os.path.exists(settings.CRAWL_ROOT):
@@ -35,20 +37,20 @@ class Command(BaseCommand):
             os.mkdir(today_dir)
             print '新建目录: %s' % today_dir
 
-        gangyin_dir = os.path.join(today_dir, 'gangyin')
-        if not os.path.exists(gangyin_dir):
-            os.mkdir(gangyin_dir)
-            print '新建目录: %s' % gangyin_dir
+        sousougang_dir = os.path.join(today_dir, 'mysteel')
+        if not os.path.exists(sousougang_dir):
+            os.mkdir(sousougang_dir)
+            print '新建目录: %s' % sousougang_dir
 
         try:
-            profile = PhoneUserProfile.objects.get(nickname=u'钢银资源单', status=2)
+            profile = PhoneUserProfile.objects.get(nickname=u'我的钢铁资源单', status=2)
         except PhoneUserProfile.DoesNotExist:
-            user = User.objects.create_user('__steelbank', '__steelbank')
+            user = User.objects.create_user('__mysteel', '__mysteel')
             profile = PhoneUserProfile.objects.create(
                 user=user,
                 phone='-',
                 qq='-',
-                nickname=u'钢银资源单',
+                nickname=u'我的钢铁资源单',
                 status=2
             )
             print '系统用户已生成'
@@ -56,27 +58,29 @@ class Command(BaseCommand):
         driver.get(url)
         time.sleep(2)
         q = pq(driver.page_source)
-        pages = q('.page').text()
-        import re
-        pages = int(re.match(u'.*共\s*(\d+)\s*页', pages).groups()[0])
-
+        # pages = int(q('.total').text()[1:-1])
+        pages = 20
         print '一共%d页' % pages
 
         for page in range(1, pages+1):
-            driver.get(url+'pg=%d'%page)
-            print '第%d页' % page
+            try:
+                driver.get(url_page+'%d.html'%page)
+                print '第%d页' % page
+            except (IndexError,Exception):
+                break
             time.sleep(2)
             # import pdb
             # pdb.set_trace()
             q = pq(driver.page_source)
             q = q('table tr')
 
-            for _ in q[3:]:
-                # import pdb
-                # pdb.set_trace()
-                excel_id = pq(pq(_).find('a')[-2]).attr('href').split('/')[-1]
-
-                if CrawlExcel.objects.filter(source=3, source_id=excel_id).exists():
+            for _ in q[2:81]:
+                try:
+                    excel_id = pq(pq(_).find('div')[-1]).text()
+                except (IndexError,Exception):
+                    break
+                
+                if CrawlExcel.objects.filter(source=4, source_id=excel_id).exists():
                     continue
 
                 try:
@@ -84,7 +88,7 @@ class Command(BaseCommand):
                     file_name = urllib.unquote(r.headers['content-disposition'].split('=')[1]).decode('gbk').encode('utf-8')
 
                     print '下载中: [%s] %s' % (excel_id, file_name)
-                    file_path = os.path.join(gangyin_dir, file_name)
+                    file_path = os.path.join(sousougang_dir, file_name)
 
                     f = open(file_path, 'wb')
                     for block in r.iter_content(1024):
@@ -96,7 +100,7 @@ class Command(BaseCommand):
                     CrawlExcel.objects.create(
                         create_time=time.time(),
                         crawl_user=profile.user,
-                        source=3,
+                        source=4,
                         source_id=excel_id,
                         filepath=file_path,
                         imported=False
