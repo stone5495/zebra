@@ -17,13 +17,12 @@ from django.contrib.auth.models import User
 url = 'http://zyd.zhaogang.com/ziyuan.html'
 download_url = 'http://zyddownload.zhaogang.com/Ajax/DownLoad/ZydDownLoad.ashx?callback=?&PKID=%s'
 
-driver = webdriver.PhantomJS()
-
 
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         print '开始下载找钢网资源单...'
+        driver = webdriver.PhantomJS()
 
         if not os.path.exists(settings.CRAWL_ROOT):
             os.mkdir(settings.CRAWL_ROOT)
@@ -103,4 +102,4 @@ class Command(BaseCommand):
                     import traceback
                     traceback.print_exc()
 
-
+        driver.close()

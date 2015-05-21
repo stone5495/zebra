@@ -17,13 +17,12 @@ from django.contrib.auth.models import User
 url = 'http://zy.banksteel.com/?bi=&bd=&ci=&cy=&br=&kw=&st=6&'
 download_url = 'http://zy.banksteel.com/d/%s'
 
-driver = webdriver.PhantomJS()
-
 
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         print '开始下载钢银网资源单...'
+        driver = webdriver.PhantomJS()
 
         if not os.path.exists(settings.CRAWL_ROOT):
             os.mkdir(settings.CRAWL_ROOT)
@@ -107,3 +106,5 @@ class Command(BaseCommand):
                     print '错误: [%s]' % excel_id
                     import traceback
                     traceback.print_exc()
+
+        driver.close()

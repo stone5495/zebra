@@ -17,13 +17,12 @@ from django.contrib.auth.models import User
 url = 'http://www.zgw.com/ProductResource/Download'
 download_url = 'http://www.zgw.com/product/ExcelExport?epId=%s'
 
-driver = webdriver.PhantomJS()
-
 
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         print '开始下载中钢网资源单...'
+        driver = webdriver.PhantomJS()
 
         if not os.path.exists(settings.CRAWL_ROOT):
             os.mkdir(settings.CRAWL_ROOT)
@@ -105,3 +104,6 @@ class Command(BaseCommand):
                     print '错误: [%s]' % excel_id
                     import traceback
                     traceback.print_exc()
+
+
+        driver.close()
