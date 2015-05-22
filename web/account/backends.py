@@ -32,7 +32,7 @@ class SmsBackend(object):
             user = User.objects.create_user(username, password=phone)
             phone_user = PhoneUserProfile.objects.create(
                 user=user, 
-                phone=phone, qq='', nickname='')
+                phone=phone, qq='', nickname='', status=1)
 
         return user
 
