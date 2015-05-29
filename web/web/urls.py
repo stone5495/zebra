@@ -21,6 +21,8 @@ urlpatterns = [
     url(r'^index/(\d+)/$', 'excel.views.index'),    
     url(r'^unindex/(\d+)/$', 'excel.views.unindex'),
 
+    url(r'^check/$', 'excel.views.check_resource'),
+
     url(r'^ask/$', 'excel.views.ask'),
     url(r'^record/$', 'excel.views.record'),
 

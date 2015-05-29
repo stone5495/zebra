@@ -27,9 +27,15 @@
             </td>
           </tr>
           <tr>
-            <td><h5>规格</h5></td>
+            <td><h5>厚度</h5></td>
             <td>
-              <input id="input_spec" class="form-control" />
+              <input id="input_thick" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <td><h5>宽度</h5></td>
+            <td>
+              <input id="input_width" class="form-control" />
             </td>
           </tr>
           <tr>
@@ -38,13 +44,11 @@
               <input id="input_weight" class="form-control" />
             </td>
           </tr>
-
-
         </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary">验货</button>
+        <button type="button" id="btn_check" class="btn btn-primary">验货</button>
       </div>
     </div>
   </div>
@@ -69,7 +73,8 @@
           data-toggle="modal" data-target="#modal_check"
           data-provider="{{ excel.excel.provider }}"
           data-warehouse="{{ row.warehouse }}"
-          data-spec="{{ row.spec }}"
+          data-thick="{{ row.thick }}"
+          data-width="{{ row.width }}"
           data-weight="{{ row.weight }}"
           >
           验货</button>
@@ -97,14 +102,36 @@ $('#modal_check').on('show.bs.modal', function (event) {
 
   var provider = button.data('provider');
   var warehouse = button.data('warehouse');
-  var spec = button.data('spec');
+  var thick = button.data('thick');
+  var width = button.data('width');
   var weight = button.data('weight');
 
   var modal = $(this);
   modal.find('#input_provider').val(provider);
   modal.find('#input_warehouse').val(warehouse);
-  modal.find('#input_spec').val(spec);
+  modal.find('#input_thick').val(thick);
+  modal.find('#input_width').val(width);
   modal.find('#input_weight').val(weight);
+});
+
+$('#btn_check').click(function () {
+  var provider = $('#input_provider').val();
+  var warehouse = $('#input_warehouse').val();
+  var thick = $('#input_thick').val();
+  var width = $('#input_width').val();
+  var weight = $('#input_weight').val();
+
+  $.get('/check', {
+    provider_name: provider,
+    warehouse_name: warehouse,
+    thick: thick,
+    width: width,
+    weight: weight
+  }).success(function(data) {
+    alert(JSON.parse(data).msg);
+  }).error(function(data) {
+    alert(data.responseText);
+  });
 });
 
 {% endblock %}

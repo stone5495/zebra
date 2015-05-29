@@ -303,6 +303,12 @@ class Command(BaseCommand):
         except:
             pass
         
+        for code, name in warehouse_data:
+            es.index('excel', 'warehouse', {
+                'code': code,
+                'name': name
+            })
+
         print 'warehouse已建'
 
 

@@ -6,7 +6,7 @@ from django.contrib.staticfiles.views import serve
 
 from models import Excel
 from common.apis.es import es
-import time, xlrd, re, uuid
+import time, xlrd, re, uuid, json
 
 from suds.client import Client
 
@@ -106,7 +106,7 @@ def analyze_warehouse(v):
 
 
 def analyze_weight(v):
-    m = re.match(u'\s*(\d{1,3}\.\d+?)', v)
+    m = re.match(u'\s*(\d{1,3}\.\d+?)\s*', v)
     if m:
         return {
             'weight': v
@@ -273,7 +273,24 @@ def detail(request, excel_id):
 
 
 def get_warehouse_code(warehouse_name):
-    pass
+    query_dict = {
+        "query": {
+            "query_string": {
+                "query": warehouse_name
+            }
+        },
+        "sort": [
+            "_score"
+        ]
+    }
+    result = es.search('excel', 'warehouse', query_dict)['hits']['hits']
+    if not result: return
+
+    top = result[0]
+    if top['_score'] < 1.0:
+        return
+
+    return top['_source']['code']
 
 
 def check_good(warehouse_code, provider_name, thick, width, weight):
@@ -314,9 +331,32 @@ def check_good(warehouse_code, provider_name, thick, width, weight):
     req_item.checkRules = '90'
 
     request.CheckGoodsModel.append(req_item)
-
     resp = client.service.stmToBytCheckGoods(request)
-    print resp
+
+    if hasattr(resp, 'checkResponseResult'):
+        result = resp.checkResponseResult.ResultCheckGoods
+    else:
+        result = resp.ResultCheckGoods
+
+    return {
+        'code': result[0]['returnCode'],
+        'msg': result[0]['returnMsg']
+    }
+
+
+def check_resource(request):
+    warehouse_name = request.GET['warehouse_name']
+    provider_name = request.GET['provider_name']
+    thick = request.GET['thick']
+    width = request.GET['width']
+    weight = request.GET['weight']
+
+    warehouse_code = get_warehouse_code(warehouse_name)
+    if not warehouse_code:
+        return HttpResponse(u'未找到仓库', status=404)
+
+    result = check_good(warehouse_code, provider_name, thick, width, weight)
+    return HttpResponse(json.dumps(result, indent=2))
 
 
 @login_required
