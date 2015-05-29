@@ -5,10 +5,55 @@
 
 {% block content %}
 
+<div class="modal fade" id="modal_check" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">验货</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered text-center">
+          <tr>
+            <td><h5>货主</h5></td>
+            <td>
+              <input id="input_provider" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <td><h5>仓库</h5></td>
+            <td>
+              <input id="input_warehouse" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <td><h5>规格</h5></td>
+            <td>
+              <input id="input_spec" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <td><h5>重量</h5></td>
+            <td>
+              <input id="input_weight" class="form-control" />
+            </td>
+          </tr>
+
+
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" class="btn btn-primary">验货</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% for excel in search_result %}
 
 <h3>
-  <a href="/download/{{ excel.excel.id }}">{{ excel.excel.name }}</a>
+  <a href="/download/{{ excel.excel.id }}">{{ excel.excel.provider }}</a>
   <small>
     {{ excel.excel.time | until_now }}
     {{ excel.excel.phone }}
@@ -19,6 +64,16 @@
 <table class="table table-bordered table-striped">
   {% for row in excel.rows %}
   <tr>
+      <td>
+        <button type="button" class="btn btn-success btn-xs"
+          data-toggle="modal" data-target="#modal_check"
+          data-provider="{{ excel.excel.provider }}"
+          data-warehouse="{{ row.warehouse }}"
+          data-spec="{{ row.spec }}"
+          data-weight="{{ row.weight }}"
+          >
+          验货</button>
+      </td>
       <td><a href="/detail/{{excel.excel.id}}/#sheet_0_{{row.row}}">第{{ row.row }}行</a></td>
       {% for cell in row.cell %}
       <td>{{ cell }}</td>
@@ -31,5 +86,25 @@
 <hr />
 
 {% endfor %}
+
+{% endblock %}
+
+
+{% block script %}
+
+$('#modal_check').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget);
+
+  var provider = button.data('provider');
+  var warehouse = button.data('warehouse');
+  var spec = button.data('spec');
+  var weight = button.data('weight');
+
+  var modal = $(this);
+  modal.find('#input_provider').val(provider);
+  modal.find('#input_warehouse').val(warehouse);
+  modal.find('#input_spec').val(spec);
+  modal.find('#input_weight').val(weight);
+});
 
 {% endblock %}

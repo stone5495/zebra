@@ -27,6 +27,7 @@ class Command(BaseCommand):
                 create_time = crawl_excel.create_time,
                 user = crawl_excel.crawl_user,
                 name = os.path.basename(crawl_excel.filepath),
+                provider = crawl_excel.provider,
                 status = 0,
                 excel_file = File(file(crawl_excel.filepath))
             )

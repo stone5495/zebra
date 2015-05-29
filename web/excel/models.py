@@ -8,6 +8,8 @@ class Excel(models.Model):
     user = models.ForeignKey(User)
 
     name = models.CharField(max_length=100)
+    provider = models.CharField(max_length=100)
+
     excel_file = models.FileField(upload_to='excels/%Y/%m/%d')
     status = models.IntegerField()
 
@@ -29,4 +31,5 @@ class CrawlExcel(models.Model):
     source_id = models.CharField(max_length=50)
     filepath = models.CharField(max_length=255)
 
+    provider = models.CharField(max_length=100)
     imported = models.BooleanField()

@@ -6,7 +6,9 @@ from django.contrib.staticfiles.views import serve
 
 from models import Excel
 from common.apis.es import es
-import time, xlrd
+import time, xlrd, re, uuid
+
+from suds.client import Client
 
 
 def search(request):
@@ -27,10 +29,7 @@ def search(request):
             }
         },
         "sort": [
-            "_score",
-            {
-                "time": "desc"
-            }
+            "_score"
         ]
     }
 
@@ -88,6 +87,35 @@ def upload(request):
     return HttpResponseRedirect('/index/%d'%excel.id)
 
 
+def analyze_spec(v):
+    m = re.match(u'\s*(\d+(\.\d+)?)\*(\d+(\.\d+)?)', v)
+    if m:
+        return {
+            'thick': m.groups()[0],
+            'width': m.groups()[2],
+            'spec': v.strip()
+        }
+
+
+def analyze_warehouse(v):
+    m = re.match(u'\s*(.*[库厂豪源工流号(储运有限公司)])', v)
+    if m:
+        return {
+            'warehouse': v
+        }
+
+
+def analyze_weight(v):
+    m = re.match(u'\s*(\d{1,3}\.\d+?)', v)
+    if m:
+        return {
+            'weight': v
+        }
+
+
+analyzers = [analyze_spec, analyze_warehouse, analyze_weight]
+
+
 def index_excel(excel):
     wb = xlrd.open_workbook(excel.excel_file.file.name)
 
@@ -95,6 +123,7 @@ def index_excel(excel):
         'id': excel.id,
         'name': excel.name,
         'time': excel.create_time,
+        'provider': excel.provider,
         'phone': excel.user.phoneuserprofile.phone,
         'nickname': excel.user.phoneuserprofile.nickname,
     }, id=excel.id)
@@ -104,25 +133,34 @@ def index_excel(excel):
 
         for row_index in range(sheet.nrows):
             values = []
+
+            extends = {}
+
             for col_index in range(sheet.ncols):
                 try:
                     value = sheet.cell_value(row_index, col_index)
                     if value:
                         values.append(unicode(value))
+                        for analyzer in analyzers:
+                            analyze_dict = analyzer(unicode(value))
+                            if analyze_dict:
+                                extends.update(analyze_dict)
                 except:
                     pass
 
             if not values:
                 continue
 
-            es.index('excel', 'row_data', {
+            d = {
                 'parent': doc['_id'],
                 'time': excel.create_time,
                 'sheet': sheet_index,
                 'sheet_name': sheet.name,
                 'row': row_index,
-                'cell': values
-            }, parent=doc['_id'])
+                'cell': values            
+            }
+            d.update(extends)
+            es.index('excel', 'row_data', d, parent=doc['_id'])
 
     excel.status = 1
     excel.save()
@@ -232,6 +270,53 @@ def detail(request, excel_id):
                 sheet_data['rows'].append(row_data)
 
     return render(request, 'detail.html', excel_data)
+
+
+def get_warehouse_code(warehouse_name):
+    pass
+
+
+def check_good(warehouse_code, provider_name, thick, width, weight):
+    url = 'http://wms.baosaas.com/STMTOBYTSERVICE_NEW/StmToBytService.asmx?wsdl'
+    client = Client(url)
+    client.set_options(soapheaders=None)
+    header = client.factory.create('ServiceSoapHeader')
+    header.UserToken ='Welcome2BYT'
+    client.set_options(soapheaders=header)
+
+    request = client.factory.create('ArrayOfCheckGoodsModel')
+    
+    req_item = client.factory.create('CheckGoodsModel')
+    req_item.requestSn = 'sn_'+uuid.uuid1().hex
+    req_item.sysId = 'STM06'
+    req_item.deptId = warehouse_code
+    req_item.packNum = ''
+    req_item.resourceNum = ''
+    req_item.netWeight = weight
+    req_item.wproviderId = ''
+    req_item.wproviderName = u''
+    req_item.providerId = ''
+    req_item.providerName = provider_name
+    req_item.kindNo = ''
+    req_item.kindName = u''
+    req_item.shopSignName = ''
+    req_item.prodareaName = u''
+    req_item.gradenumThick = thick
+    req_item.gradenumWidth = width
+    req_item.gradenumLength = '0'
+    req_item.goodId = '1'
+    req_item.planQty = ''
+    req_item.businessType = ''
+    req_item.goodsId = ''
+    req_item.ownerId = ''
+    req_item.spec = ''
+    req_item.ruleType = 'A'
+    req_item.checkRules = '90'
+
+    request.CheckGoodsModel.append(req_item)
+
+    resp = client.service.stmToBytCheckGoods(request)
+    print resp
 
 
 @login_required

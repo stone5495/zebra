@@ -60,7 +60,6 @@ class Command(BaseCommand):
         pages = int(q('.total').text()[1:-1])
         print '一共%d页' % pages
 
-
         for page in range(1, pages+1):
             driver.get(url+'?p=%d'%page)
             print '第%d页' % page
@@ -70,6 +69,7 @@ class Command(BaseCommand):
 
             for _ in q[1:]:
                 excel_id = pq(pq(_).find('a')[-2]).attr('vals')
+                excel_provider = pq(pq(_).find('.company')[0]).text()
 
                 if CrawlExcel.objects.filter(source=1, source_id=excel_id).exists():
                     continue
@@ -93,6 +93,7 @@ class Command(BaseCommand):
                         crawl_user=profile.user,
                         source=1,
                         source_id=excel_id,
+                        provider=excel_provider,
                         filepath=file_path,
                         imported=False
                     )
