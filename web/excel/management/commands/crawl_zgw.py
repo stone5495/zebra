@@ -56,8 +56,6 @@ class Command(BaseCommand):
         driver.get(url)
         time.sleep(2)
         q = pq(driver.page_source)
-        # import pdb
-        # pdb.set_trace()
         pages = int(q('.pagenum').text()[1:-5])
         print '一共%d页' % pages
 
@@ -69,8 +67,10 @@ class Command(BaseCommand):
             q = q('table tr ')
 
             for _ in q[1:]:
+                # import pdb
+                # pdb.set_trace()
                 excel_id = str(pq(pq(_).find('td')[0]).attr('id'))
-
+                excel_provider =(pq(pq(_).find('td')[0]).find('a').text())
                 if excel_id == 'None':
                     continue
 
@@ -97,6 +97,7 @@ class Command(BaseCommand):
                         source=2,
                         source_id=excel_id,
                         filepath=file_path,
+                        excel_provider=excel_provider,
                         imported=False
                     )
 

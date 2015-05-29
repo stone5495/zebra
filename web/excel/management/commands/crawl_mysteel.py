@@ -69,14 +69,15 @@ class Command(BaseCommand):
             except (IndexError,Exception):
                 break
             time.sleep(2)
-            # import pdb
-            # pdb.set_trace()
             q = pq(driver.page_source)
             q = q('table tr')
 
             for _ in q[2:81]:
+                # import pdb
+                # pdb.set_trace()
                 try:
                     excel_id = pq(pq(_).find('div')[-1]).text()
+                    excel_provider = pq(pq(_)('td')[-1]).attr('title')
                 except (IndexError,Exception):
                     break
                 
@@ -103,6 +104,7 @@ class Command(BaseCommand):
                         source=4,
                         source_id=excel_id,
                         filepath=file_path,
+                        excel_provider=excel_provider,
                         imported=False
                     )
 
