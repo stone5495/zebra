@@ -75,6 +75,7 @@ class Command(BaseCommand):
                 # import pdb
                 # pdb.set_trace()
                 excel_id = pq(pq(_).find('a')[-2]).attr('href').split('/')[-1]
+                excel_provider = pq(pq(_).find('.company')).text()
 
                 if CrawlExcel.objects.filter(source=3, source_id=excel_id).exists():
                     continue
@@ -99,6 +100,7 @@ class Command(BaseCommand):
                         source=3,
                         source_id=excel_id,
                         filepath=file_path,
+                        excel_provider=excel_provider,
                         imported=False
                     )
 
