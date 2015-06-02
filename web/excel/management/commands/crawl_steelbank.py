@@ -56,7 +56,6 @@ class Command(BaseCommand):
         driver.get(url)
         time.sleep(2)
         q = pq(driver.page_source)
-        pages = q('.page').text()
         import re
         pages = int(re.match(u'.*共\s*(\d+)\s*页', pages).groups()[0])
 
@@ -100,7 +99,7 @@ class Command(BaseCommand):
                         source=3,
                         source_id=excel_id,
                         filepath=file_path,
-                        excel_provider=excel_provider,
+                        provider=excel_provider,
                         imported=False
                     )
 

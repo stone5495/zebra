@@ -104,7 +104,7 @@ class Command(BaseCommand):
                         source=4,
                         source_id=excel_id,
                         filepath=file_path,
-                        excel_provider=excel_provider,
+                        provider=excel_provider,
                         imported=False
                     )
 
