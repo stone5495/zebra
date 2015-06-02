@@ -56,6 +56,7 @@ class Command(BaseCommand):
         driver.get(url)
         time.sleep(2)
         q = pq(driver.page_source)
+        pages = q('.page').text()
         import re
         pages = int(re.match(u'.*共\s*(\d+)\s*页', pages).groups()[0])
 
