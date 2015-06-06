@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/vendor.css?v={{ request.version }}"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/app.css?v={{ request.version }}"/>
+    <script src="{{ STATIC_URL }}js/vendor.js?v={{ request.version }}"></script>
+    <script src="{{ static_url }}js/app.js?v={{ request.version }}"></script>
+    <title>{% block title %}ubt{% endblock %}</title>
+</head>
+<body>
+<div id="header" style="">
+    <div class="header_inner">
+        <h1 class="logo">
+            <a title="用户分析" href="#"></a>
+        </h1>
+    </div>
+</div>
+
+{% block content %}
+{% endblock %}
+</body>
+</html>
