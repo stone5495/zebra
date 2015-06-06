@@ -1,18 +1,36 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 from django.db import models
 
 
 class HourBehaviour(models.Model):
 
+    """
+        Basic Model class to record hourly visit data of the system.
+
+        hour: format 'YYYY-MM-DD-HH' to remake the specific hour.
+
+
+    """
+
     hour = models.CharField(MaxLenth=15)
 
     page_view = models.IntegerField()
     user_view = models.IntegerField()
-    search_count = models.IntegerField()
-    download_count = models.IntegerField()
-    register_count = models.IntegerField()
-    upload_count = models.IntegerField()
-    crawl_count = models.IntegerField()
+    login_cnt = models.IntegerField()
+    search_cnt = models.IntegerField()
+    download_cnt = models.IntegerField()
+    register_cnt = models.IntegerField()
+    upload_cnt = models.IntegerField()
+    crawl_cnt = models.IntegerField()
 
-    last_update_tim = models.DateTimeField()
+    record_date = models.DateField()
+    last_update_time = models.DateTimeField()
+
+    def __unicode__(self):
+        return self.hour
+
+    class Meta:
+        db_table = "user_behaviour_hourly_static"
+        ordering = [-"last_update_time"]
+        get_latest_by = "last_update_time"
