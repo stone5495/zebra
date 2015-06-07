@@ -28,5 +28,3 @@ def cache_to_redis(key):
                 print "key"
         return wrapper
     return real_decorator
-
-def

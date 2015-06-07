@@ -49,7 +49,7 @@ class OverView(object):
         result = {"today": today, "yesterday": yesterday, "predict": predict}
         return HttpResponse(json.dumps(result), content_type="application/json")
 
-    def get_trend(self):
+    def get_overview(self):
 
         today = {"pv": [], "uv": [], "ID": [], "search": [], "download": [], "regi": [], "key": []}
         yesterday = {"pv": [], "uv": [], "ID": [], "search": [], "download": [], "regi": [], "key": []}
