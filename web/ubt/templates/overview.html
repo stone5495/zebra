@@ -1,4 +1,64 @@
 {% extends 'common/base.html' %}
 {% block content %}
+<div class="row">
+  <div class="span12">
+    <div class="table-title" style="
+    font-size: large;
+    font-weight: bold;
+    margin: 20px;
+">每日用户统计</div>
+    <table data-toggle="table" data-url="" data-cache="false" data-height="300">
+    <thead>
+        <tr>
+            <th data-field="day">时间</th>
+            <th data-field="pv">浏览量(PV)</th>
+            <th data-field="uv">访客数(UV)</th>
+            <th data-field="id">登陆数(ID)</th>
+            <th data-field="search">搜索数量</th>
+            <th data-field="download">下载数量</th>
+            <th data-field="register">注册数量</th>
+        </tr>
+    </thead>
+</table>
+  </div>
+</div>
+<div class="row">
+  <div class="span12">
+    <div id = "overview_chart" style="height:300px"></div>
+  </div>
+</div>
+<div class="row">
+  <div class="span6">
+        <div class="table-title">搜索关键字TOP5</div>
+     <table data-toggle="table" data-url="" data-cache="false" data-height="300">
+    <thead>
+        <tr>
+            <th data-field="key">关键字</th>
+            <th data-field="search">搜索数量</th>
+        </tr>
+    </thead>
+</table>
+  </div>
+  <div class="span6">
+    <div class="table-title">搜索关键字TOP5</div>
+     <table data-toggle="table" data-url="" data-cache="false" data-height="300">
+    <thead>
+        <tr>
+            <th data-field="key">关键字</th>
+            <th data-field="download">下载数量</th>
+        </tr>
+    </thead>
+</table>
+  </div>
+</div>
+<div class="row">
+  <div class="span6">
+    <div id = "crawl_chart" style="height:300px"></div>
+  </div>
+  <div class="span6">
+   <div id = "upload_chart" style="height:300px"></div>
+</div>
+</div>
+<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
 
 {% endblock %}

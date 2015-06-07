@@ -9,15 +9,28 @@
     <title>{% block title %}ubt{% endblock %}</title>
 </head>
 <body>
-<div id="header" style="">
-    <div class="header_inner">
-        <h1 class="logo">
-            <a title="用户分析" href="#"></a>
-        </h1>
+<nav>
+    <div class="nav-wrapper card-panel teal lighten-2">
+      <a href="#" class="brand-logo" style="margin-top: -18px;">UBT</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="#"></a></li>
+        <li><a href="#"></a></li>
+        <li><a href="#"></a></li>
+      </ul>
     </div>
-</div>
+</nav>
 
 {% block content %}
+
+
 {% endblock %}
+<footer class="page-footer teal lighten-2">
+  <div class="footer-copyright">
+    <div class="container">
+    © 2014 Copyright Zebra
+    <a class="grey-text text-lighten-4 right" href="#!">Zebra Search</a>
+    </div>
+  </div>
+</footer>
 </body>
 </html>

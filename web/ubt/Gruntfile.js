@@ -16,11 +16,8 @@ function addAssets(kv, base) {
 
 var cdnjs = {
   'js/jquery.js': 'jquery/2.0.3/jquery.js',
-  //'js/chosen.jquery.js': 'chosen/1.1.0/chosen.jquery.js',
-  'js/jquery.gridster.js': 'jquery.gridster/0.5.4/jquery.gridster.js',
-  'css/jquery.gridster.css': 'jquery.gridster/0.5.4/jquery.gridster.css',
-  //'js/jquery.powertip.js': 'jquery-powertip/1.2.0/jquery.powertip.js',
-  //'css/jquery.powertip.css': 'jquery-powertip/1.2.0/css/jquery.powertip.css',
+  //'js/jquery.gridster.js': 'jquery.gridster/0.5.4/jquery.gridster.js',
+  //'css/jquery.gridster.css': 'jquery.gridster/0.5.4/jquery.gridster.css',
 
   'css/font-awesome.css': 'font-awesome/4.2.0/css/font-awesome.css',
   'fonts/FontAwesome.otf': 'font-awesome/4.2.0/fonts/FontAwesome.otf',
@@ -37,15 +34,21 @@ var cdnjs = {
   'js/bootstrap.js': 'twitter-bootstrap/3.1.1/js/bootstrap.js',
   'css/bootstrap.css': 'twitter-bootstrap/3.1.1/css/bootstrap.css',
   'js/bootstrap-switch.js': 'bootstrap-switch/2.0.0/js/bootstrap-switch.js',
-  'js/topojson.min.js': 'topojson/1.1.0/topojson.min.js',
-  'js/bootstrap-datepicker.min.js': 'bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js',
-  'js/bootstrap-datepicker.zh-CN.min.js': 'bootstrap-datepicker/1.3.0/js/locales/bootstrap-datepicker.zh-CN.min.js',
-  'css/datepicker3.min.css': 'bootstrap-datepicker/1.3.0/css/datepicker3.min.css',
-  'js/d3.js': 'd3/3.4.3/d3.js',
+  //'js/topojson.min.js': 'topojson/1.1.0/topojson.min.js',
+  //'js/bootstrap-datepicker.min.js': 'bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js',
+  //'js/bootstrap-datepicker.zh-CN.min.js': 'bootstrap-datepicker/1.3.0/js/locales/bootstrap-datepicker.zh-CN.min.js',
+  //'css/datepicker3.min.css': 'bootstrap-datepicker/1.3.0/css/datepicker3.min.css',
+  //'js/d3.js': 'd3/3.4.3/d3.js',
   'css/material.css': 'materialize/0.96.1/css/materialize.min.css',
   'js/material.js': 'materialize/0.96.1/js/materialize.min.js'
 };
 addAssets(cdnjs, 'http://cdnjs.cloudflare.com/ajax/libs/');
+
+
+/*var echarts = {
+  'js/echarts.js': 'build/dist/echarts-all.js'
+};
+addAssets(echarts, "http://echarts.baidu.com/");*/
 
 var flatui = {
   'js/bootstrap-select.js': '2.1.3/js/bootstrap-select.js',
@@ -59,11 +62,12 @@ var flatui = {
 };
 addAssets(flatui, 'http://rawgithub.com/designmodo/Flat-UI/');
 
-var bootstrap_material = {
 
-}
-
-addAssets(bootstrap_material, 'http://rawgithub.com/designmodo/Flat-UI/');
+var bootstrap_table = {
+  'css/bootstrap-table.css': 'wenzhixin/bootstrap-table/master/dist/bootstrap-table.css',
+  'js/bootstrap-table.js': 'wenzhixin/bootstrap-table/master/dist/bootstrap-table.js'
+};
+addAssets(bootstrap_table, 'https://cdn.rawgit.com/');
 
 module.exports = function(grunt) {
 
@@ -134,5 +138,6 @@ module.exports = function(grunt) {
   grunt.registerTask('build', ['concat', 'uglify', 'cssmin']);
   grunt.registerTask('init', ['curl', 'build']);
   grunt.registerTask('default', ['build']);
+  grunt.registerTask('concat', ['concat']);
 
 };
