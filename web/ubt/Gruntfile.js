@@ -16,9 +16,6 @@ function addAssets(kv, base) {
 
 var cdnjs = {
   'js/jquery.js': 'jquery/2.0.3/jquery.js',
-  //'js/jquery.gridster.js': 'jquery.gridster/0.5.4/jquery.gridster.js',
-  //'css/jquery.gridster.css': 'jquery.gridster/0.5.4/jquery.gridster.css',
-
   'css/font-awesome.css': 'font-awesome/4.2.0/css/font-awesome.css',
   'fonts/FontAwesome.otf': 'font-awesome/4.2.0/fonts/FontAwesome.otf',
   'fonts/fontawesome-webfont.eot': 'font-awesome/4.2.0/fonts/fontawesome-webfont.eot',
@@ -34,11 +31,6 @@ var cdnjs = {
   'js/bootstrap.js': 'twitter-bootstrap/3.1.1/js/bootstrap.js',
   'css/bootstrap.css': 'twitter-bootstrap/3.1.1/css/bootstrap.css',
   'js/bootstrap-switch.js': 'bootstrap-switch/2.0.0/js/bootstrap-switch.js',
-  //'js/topojson.min.js': 'topojson/1.1.0/topojson.min.js',
-  //'js/bootstrap-datepicker.min.js': 'bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js',
-  //'js/bootstrap-datepicker.zh-CN.min.js': 'bootstrap-datepicker/1.3.0/js/locales/bootstrap-datepicker.zh-CN.min.js',
-  //'css/datepicker3.min.css': 'bootstrap-datepicker/1.3.0/css/datepicker3.min.css',
-  //'js/d3.js': 'd3/3.4.3/d3.js',
   'css/material.css': 'materialize/0.96.1/css/materialize.min.css',
   'js/material.js': 'materialize/0.96.1/js/materialize.min.js'
 };
@@ -68,6 +60,14 @@ var bootstrap_table = {
   'js/bootstrap-table.js': 'wenzhixin/bootstrap-table/master/dist/bootstrap-table.js'
 };
 addAssets(bootstrap_table, 'https://cdn.rawgit.com/');
+
+var angular_chart = {
+  'js/angular-chart.js': 'jtblin/angular-chart.js/master/dist/angular-chart.js',
+  'css/angular-chat.css': 'jtblin/angular-chart.js/master/dist/angular-chart.css',
+  'js/chart.js': 'nnnick/Chart.js/master/Chart.min.js',
+  'js/rainbow.js': 'ccampbell/rainbow/master/js/rainbow.min.js'
+}
+addAssets(angular_chart, "https://cdn.rawgit.com/")
 
 module.exports = function(grunt) {
 
