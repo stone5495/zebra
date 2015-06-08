@@ -1,111 +1,72 @@
-(function () {
+var app=angular.module("app", ["chart.js","ui.grid"])
 
-    var STATIC = {};
-    STATIC.chart_id = ['overview','crawl','upload'];
-    STATIC.base_url = '/overview';
-    STATIC.param_chart = 'json';
+app.controller("LineCtrl", function ($scope) {
 
-    function _init(){
-      loadChart();
-    }
+    $scope.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+    $scope.series = ['yesterday', 'today'];
+    $scope.data = [
+        [65, 59, 80, 81, 56, 55, 40,10,30,20,40,50,60,80,20,19,49,50,30,32,34,64,52,13],
+        [28, 48, 40, 19, 86, 27, 90]
+    ];
+    $scope.onClick = function (points, evt) {
+        console.log(points, evt);
+    };
+});
 
-    function _getQuery(obj){
-      return $.extend({
-      }, obj);
-    }
+app.controller("LineCtrl1", function ($scope, $http) {
 
-    function _ajax(obj, cb, name){
-      $.ajax({
-        url: STATIC.base_url+"/"+name,
-        method: 'post',
-        data: _getQuery(obj),
-        success: cb
-      });
-    }
+    $scope.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+    $scope.series = ['yesterday', 'today'];
+    $scope.data = [
+        [65, 59, 80, 81, 56, 55, 40,10,30,20,40,50,60,80,20,19,49,50,30,32,34,64,52,13],
+        [28, 48, 40, 19, 86, 27, 90]
+    ];
 
-    function __getChartRef(chart_name){
-      if(chart_ref == null){
-        chart_ref = echarts.init(document.getElementById(chart_name));
-      }
-      return chart_ref;
-    }
+    //$scope.data = '/data.php';ppppppppppppppppp
 
-    function _paintChart(data){
-      if($.isEmptyObject(data)){
-        console.error('趋势分析图无数据');
-        return;
-      }
+    //$http.get('/data.php').
+    //    success(function(data, status, headers, config) {
+    //        $scope.data = data;
+    //    }).
+    //    error(function(data, status, headers, config) {
+    //        // log error
+    //    });
+    $scope.onClick = function (points, evt) {
+        console.log(points, evt);
+    };
+});
 
-      [data.percent, data.percent2].forEach(function(arr){
-        arr.forEach(function(value, index){
-          arr[index] = parseFloat(value * 100).toFixed(2);
-        });
-      });
+app.controller("LineCtrl2", function ($scope, $http) {
 
-      var opt = {
-        tooltip : {
-          trigger: 'axis'
-        },
-        legend: {
-          data: ['拉取的配送单总数', '完成整个蜂鸟配送流程的配送单数', '有效配送单量', '完成配送流程百分比', '有效配送单百分比']
-        },
-        xAxis: [{
-          type: 'category',
-          data: data.key
-        }],
-        yAxis: [{
-          type: 'value',
-          name: '单数（单）'
-        },{
-          type: 'value',
-          name: '百分比（%）'
-        }],
-        series: [{
-          name: '拉取的配送单总数',
-          type: 'bar',
-          data: data.total
-        },{
-          name: '完成整个蜂鸟配送流程的配送单数',
-          type: 'bar',
-          data: data.complete
-        },{
-          name: '有效配送单量',
-          type: 'bar',
-          data: data.valid
-        },{
-          name: '完成配送流程百分比',
-          type: 'line',
-          yAxisIndex: 1,
-          data: data.percent
-        },{
-          name: '有效配送单百分比',
-          type: 'line',
-          yAxisIndex: 1,
-          data: data.percent2
-        }]
-      }
-      __getChartRef().setOption(opt);
-    }
+    $scope.labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
+    $scope.series = ['yesterday', 'today'];
+    $scope.data = [
+        [65, 59, 80, 81, 56, 55, 40,10,30,20,40,50,60,80,20,19,49,50,30,32,34,64,52,13],
+        [28, 48, 40, 19, 86, 27, 90]
+    ];
 
-    function loadChart(){
-      __getChartRef().showLoading();
-      _ajax({type: STATIC.param_chart}, _paintChart);
-    }
+    //$scope.data = '/data.php';ppppppppppppppppp
 
-    function loadTable(){
-      STATIC.$table.datagrid({
-        url: STATIC.base_url,
-        queryParams: _getQuery({type: STATIC.param_table})
-      });
-    }
+    //$http.get('/data.php').
+    //    success(function(data, status, headers, config) {
+    //        $scope.data = data;
+    //    }).
+    //    error(function(data, status, headers, config) {
+    //        // log error
+    //    });
+    $scope.onClick = function (points, evt) {
+        console.log(points, evt);
+    };
+});
 
-    function refreshTable(){
-      STATIC.$table.datagrid('load', _getQuery({type: STATIC.param_table}));
-    }
-
-    function downloadTable(){
-      _download('post', STATIC.base_url, _getQuery({type: 'download'}));
-    }
-
-    $(window).ready(_init);
- })();
+app.controller('Table1', function($scope) {
+    $scope.myData = [{name: "Moroni", age: 50},
+        {name: "Tiancum", age: 43},
+        {name: "Jacob", age: 27},
+        {name: "Nephi", age: 29},
+        {name: "Enos", age: 34}];
+    $scope.gridOptions = {
+        data: 'myData',
+        columnDefs: [{field:'name', displayName:'Name'}, {field:'age', displayName:'Age'}]
+    };
+});

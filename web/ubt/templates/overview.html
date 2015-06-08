@@ -1,64 +1,129 @@
 {% extends 'common/base.html' %}
 {% block content %}
-<div class="row">
-  <div class="col-md-10 col-md-offset-1">
-    <div class="table-title" style="
-    font-size: large;
-    font-weight: bold;
-    margin: 20px;
-">每日用户统计</div>
-    <table data-toggle="table" data-url="" data-cache="false" data-height="300">
-    <thead>
-        <tr>
-            <th data-field="day">时间</th>
-            <th data-field="pv">浏览量(PV)</th>
-            <th data-field="uv">访客数(UV)</th>
-            <th data-field="id">登陆数(ID)</th>
-            <th data-field="search">搜索数量</th>
-            <th data-field="download">下载数量</th>
-            <th data-field="register">注册数量</th>
-        </tr>
-    </thead>
-</table>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-10 col-md-offset-1">
-    <div id = "overview" style="height:300px"></div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-5 col-md-offset-1">
-        <div class="table-title">搜索关键字TOP5</div>
-     <table data-toggle="table" data-url="" data-cache="false" data-height="300">
-    <thead>
-        <tr>
-            <th data-field="key">关键字</th>
-            <th data-field="search">搜索数量</th>
-        </tr>
-    </thead>
-</table>
-  </div>
-  <div class="col-md-5">
-    <div class="table-title">搜索关键字TOP5</div>
-     <table data-toggle="table" data-url="" data-cache="false" data-height="300">
-    <thead>
-        <tr>
-            <th data-field="key">关键字</th>
-            <th data-field="download">下载数量</th>
-        </tr>
-    </thead>
-</table>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-5 col-md-offset-1">
-    <div id = "crawl" style="height:300px"></div>
-  </div>
-  <div class="col-md-5">
-   <div id = "upload" style="height:300px"></div>
-</div>
-</div>
-<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">每日统计</div>
+                <div class="panel-body">
+                    <div class="table-container">
+                        <table data-toggle="table" data-url="" data-cache="false" data-height="300">
+                            <thead>
+                            <tr>
+                                <th data-field="day">时间</th>
+                                <th data-field="pv">浏览量(PV)</th>
+                                <th data-field="uv">访客数(UV)</th>
+                                <th data-field="id">登陆数(ID)</th>
+                                <th data-field="search">搜索数量</th>
+                                <th data-field="download">下载数量</th>
+                                <th data-field="register">注册数量</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+    </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-10 col-md-offset-1 col-sm-12 ng-scope" id="line-chart2" ng-controller="LineCtrl2">
+            <div class="panel panel-default">
+                <div class="panel-heading">每日趋势</div>
+                <div class="panel-body">
+                    <div class="chart-container">
+                        <canvas id="line1" class="chart chart-line ng-isolate-scope" data="data" labels="labels"
+                                legend="true" click="onClick" hover="onHover" series="series" height="100px"></canvas>
+                        <chart-legend>
+                        </chart-legend>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5 col-md-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">搜索TOP5</div>
+                <div class="panel-body">
+                    <div class="table-container">
+                        <table data-toggle="table" data-url="" data-cache="false" data-height="300">
+                            <thead>
+                            <tr>
+                                <th data-field="key">关键字</th>
+                                <th data-field="search">搜索数量</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-5">
+        <div class="panel panel-default">
+            <div class="panel-heading">下载TOP5</div>
+            <div class="panel-body">
+                <div class="table-container">
+                    <table data-toggle="table" data-url="" data-cache="false" data-height="300">
+                        <thead>
+                        <tr>
+                            <th data-field="key">关键字</th>
+                            <th data-field="download">下载数量</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-5 col-md-offset-1 col-sm-12 ng-scope" id="line-chart" ng-controller="LineCtrl">
+            <div class="panel panel-default">
+                <div class="panel-heading">搜索数量</div>
+                <div class="panel-body">
+                    <div class="chart-container">
+                        <canvas id="line" class="chart chart-line ng-isolate-scope" data="data" labels="labels"
+                                legend="true" click="onClick" hover="onHover" series="series" height="261" width="523"
+                                style="width: 523px; height: 100px;"></canvas>
+                        <chart-legend>
+                        </chart-legend>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 col-sm-12 ng-scope" id="line-chart1" ng-controller="LineCtrl1">
+            <div class="panel panel-default">
+                <div class="panel-heading">下载数量</div>
+                <div class="panel-body">
+                    <div class="chart-container">
+                        <canvas id="line1" class="chart chart-line ng-isolate-scope" data="data" labels="labels"
+                                legend="true" click="onClick" hover="onHover" series="series" height="261" width="523"
+                                style="width: 523px; height: 100px;"></canvas>
+                        <chart-legend>
+                        </chart-legend>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+<link rel="stylesheet" href="http://jtblin.github.io/angular-chart.js/dist/angular-chart.css">
+<link rel="stylesheet"
+      href="http://jtblin.github.io/angular-chart.js/bower_components/font-awesome/css/font-awesome.min.css">
+<link href="http://jtblin.github.io/angular-chart.js/examples/bootstrap.css" rel="stylesheet">
+<link href="http://jtblin.github.io/angular-chart.js/examples/app.css" rel="stylesheet">
+<script src="http://jtblin.github.io/angular-chart.js/bower_components/angular/angular.min.js"></script>
+<script src="http://jtblin.github.io/angular-chart.js/bower_components/Chart.js/Chart.min.js"></script>
+<script src="http://jtblin.github.io/angular-chart.js/bower_components/rainbow/js/rainbow.min.js"></script>
+<script src="http://jtblin.github.io/angular-chart.js/bower_components/rainbow/js/language/generic.js"></script>
+<script src="http://jtblin.github.io/angular-chart.js/bower_components/rainbow/js/language/html.js"></script>
+<script src="http://jtblin.github.io/angular-chart.js/bower_components/rainbow/js/language/javascript.js"></script>
+<script src="http://jtblin.github.io/angular-chart.js/dist/angular-chart.js"></script>
 {% endblock %}
