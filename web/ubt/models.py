@@ -32,5 +32,5 @@ class HourBehaviour(models.Model):
 
     class Meta:
         db_table = "user_behaviour_hourly_static"
-        ordering = [-"last_update_time"]
+        ordering = ["-last_update_time"]
         get_latest_by = "last_update_time"
