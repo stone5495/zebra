@@ -2,14 +2,6 @@
 import redis
 from functools import wraps
 
-def hello(func):
-    @wraps(func)
-    def wrapper():
-        print "hello world"
-        func()
-        print "bye world"
-
-    return wrapper
 
 def cache_to_redis(key):
     print "key {} updated".format(key)
