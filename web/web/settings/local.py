@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'common',
     'account',
     'excel',
+    'ubt',
 )
 
 MIDDLEWARE_CLASSES = (

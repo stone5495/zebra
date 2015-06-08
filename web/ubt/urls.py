@@ -3,5 +3,5 @@
 from django.conf.urls import url
 
 urlpatterns = [
-    url(r'^overview/(.*)$', 'views.overview'),
+    url(r'^overview/(.*)$', 'ubt.views.overview'),
 ]
