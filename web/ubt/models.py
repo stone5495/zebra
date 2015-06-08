@@ -13,7 +13,7 @@ class HourBehaviour(models.Model):
 
     """
 
-    hour = models.CharField(MaxLenth=15)
+    hour = models.CharField(max_length=15)
 
     page_view = models.IntegerField()
     user_view = models.IntegerField()
