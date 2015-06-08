@@ -114,9 +114,9 @@ class OverView(object):
             yesterday["crawl"].append(record.crawl_cnt)
             yesterday["key"].append(record.hour.split("-")[2])
 
-        keys = yesterday.key if len(yesterday.key) > len(today.key) else today.key
-        del yesterday.key
-        del today.key
+        keys = yesterday["key"] if len(yesterday["key"]) > len(today["key"]) else today["key"]
+        del yesterday["key"]
+        del today["key"]
 
         result = {"today": today, "yesterday": yesterday, "keys": keys}
         return HttpResponse(json.dumps(result), content_type="application/json")
