@@ -1,5 +1,5 @@
 #coding=utf-8
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.staticfiles.views import serve
@@ -12,11 +12,13 @@ from suds.client import Client
 
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html', {})
 
 
 def search(request):
     q = request.GET.get('q', '')
+    if not q:
+        return redirect('/')
 
     hits = []
     docs = {}
@@ -110,6 +112,8 @@ def analyze_warehouse(v):
 
 
 def analyze_weight(v):
+    t = v.strip()
+
     m = re.match(u'\s*(\d{1,3}\.\d+?)\s*', v)
     if m:
         return {
@@ -219,6 +223,7 @@ def unindex(request, excel_id):
     return HttpResponseRedirect('/manage/')
 
 
+@login_required
 def download(request, excel_id):
     try:
         excel = Excel.objects.get(id=excel_id)
@@ -226,8 +231,12 @@ def download(request, excel_id):
         return HttpResponse(u'Excel不存在', status=404)
 
     #添加下载记录
+    download = request.GET.get('file', '')
 
-    return HttpResponseRedirect(excel.excel_file.url)
+    if download:
+        return HttpResponseRedirect(excel.excel_file.url)
+    else:
+        return render(request, 'download.html', { 'excel_id': excel_id })
 
 
 def detail(request, excel_id):

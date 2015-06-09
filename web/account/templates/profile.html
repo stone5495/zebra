@@ -1,9 +1,23 @@
-{% extends 'base.html' %}
 {% load until_now %}
 
-{% block title %}个人资料{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>找货验货，就用斑马搜索</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+</head>
 
-{% block content %}
+<body>
+
+<div class="container">
+
+<div class="row text-center">
+  <a href="/"><img width="300px" src="/static/images/logo.jpg" /></a>
+</div>
+
+<div class="row text-center">
 
 <form action="" method="POST">
   {% csrf_token %}
@@ -16,4 +30,11 @@
   </div>
 </form>
 
-{% endblock %}
+</div>
+
+</div>
+
+</body>
+
+</html>
+

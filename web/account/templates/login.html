@@ -1,9 +1,21 @@
-{% extends 'base.html' %}
 {% load until_now %}
 
-{% block title %}登录{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>找货验货，就用斑马搜索</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+</head>
 
-{% block content %}
+<body>
+
+<div class="container">
+
+<div class="row text-center">
+  <a href="/"><img width="300px" src="/static/images/logo.jpg" /></a>
+</div>
 
 {% if error %}
 
@@ -13,6 +25,8 @@
 </div>
 
 {% endif %}
+
+<div class="row text-center">
 
 <form action="" method="POST">
   {% csrf_token %}
@@ -26,9 +40,12 @@
   </div>
 </form>
 
-{% endblock %}
+</div>
 
-{% block script %}
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+
+<script>
 
 $(function() {
   $('#btn_send_validation_code').click(function () {
@@ -41,4 +58,4 @@ $(function() {
   });
 });
 
-{% endblock %}
+</script>

@@ -1,0 +1,51 @@
+<html>
+<head>
+    <title>资源单下载</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+
+    <h3 class="page-header">
+        请等候<span id="span_countdown">3</span>秒
+    </h3>
+
+    <span>
+        如果未跳转，请<a href="/download/{{excel_id}}/?file=1">点击这里</a>直接下载
+    </span>
+
+    <button class="btn btn-primary" id="btn_close">关闭页面</button>
+
+</div>
+
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+
+<script>
+
+var count_down = 3;
+
+$(function() {
+    $('#btn_close').click(function() {
+        window.close();
+    });
+
+    var timer = setInterval(function() {
+        if (count_down == 0) {
+            window.location = '/download/{{excel_id}}/?file=1';
+            clearTimeout(timer);
+        }
+        else {
+            count_down--;
+            $('#span_countdown').text(count_down);
+        }
+    }, 1000);
+});
+
+</script>
+
+
+</body>
+</html>

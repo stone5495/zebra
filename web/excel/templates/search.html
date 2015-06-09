@@ -57,7 +57,7 @@
 {% for excel in search_result %}
 
 <h3>
-  <a href="/download/{{ excel.excel.id }}">{{ excel.excel.provider }}</a>
+  <a target="new" href="/download/{{ excel.excel.id }}">{{ excel.excel.provider }}</a>
   <small>
     {{ excel.excel.time | until_now }}
     {{ excel.excel.phone }}
