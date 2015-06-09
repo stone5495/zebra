@@ -1,0 +1,46 @@
+{% load until_now %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>找货验货，就用斑马搜索</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/base.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="row text-center">
+  <img width="300px" src="http://img02.tooopen.com/images/20140327/sy_57728372815.jpg" />
+</div>
+
+<div class="row text-center">
+ <form action="/search" class="navbar-form">
+    <div class="input-group input-group-md" >
+      <input type="text" style="width: 600px;" class="form-control" name="q" value="{{ q }}" placeholder="品种，牌号，规格，钢厂">
+      <span class="input-group-btn">
+        <button class="btn btn-default btn-success" type="submit">
+          找今日资源单
+        </button>
+      </span>
+    </div>
+  </form>
+</div>
+
+<br />
+
+<div class="row text-center">
+  <h1>找货验货，就用斑马搜索</h1>
+</div>
+
+</div>
+
+<script>
+</script>
+
+</body>
+
+</html>

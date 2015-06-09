@@ -11,7 +11,8 @@ urlpatterns = [
     url(r'^send/validation/code/$', 'account.views.send_validation_code'),
     url(r'^profile/$', 'account.views.profile'),
 
-    url(r'^$', 'excel.views.search'),
+    url(r'^$', 'excel.views.home'),
+    url(r'^search/$', 'excel.views.search'),
     url(r'^manage/$', 'excel.views.manage'),
 
     url(r'^upload/$', 'excel.views.upload'),

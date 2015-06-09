@@ -128,6 +128,7 @@ $('#btn_check').click(function () {
     width: width,
     weight: weight
   }).success(function(data) {
+    console.log(data);
     alert(JSON.parse(data).msg);
   }).error(function(data) {
     alert(data.responseText);

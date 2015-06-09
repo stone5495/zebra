@@ -11,6 +11,10 @@ import time, xlrd, re, uuid, json
 from suds.client import Client
 
 
+def home(request):
+    return render(request, 'home.html')
+
+
 def search(request):
     q = request.GET.get('q', '')
 
