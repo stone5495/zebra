@@ -6,6 +6,7 @@ from django.contrib.staticfiles.views import serve
 
 from models import Excel
 from common.apis.es import es
+from ubt.datapoint import record_data_point
 import time, xlrd, re, uuid, json
 
 from suds.client import Client
@@ -19,6 +20,8 @@ def search(request):
     q = request.GET.get('q', '')
     if not q:
         return redirect('/')
+
+    record_data_point(request, 'search', q=q)
 
     hits = []
     docs = {}
@@ -89,6 +92,8 @@ def upload(request):
         status = 0,
         excel_file = excel_file
     )
+
+    record_data_point(request, 'upload', excel_id=excel.id)
 
     return HttpResponseRedirect('/index/%d'%excel.id)
 
@@ -188,6 +193,7 @@ def index(request, excel_id):
         return HttpResponse(u'已经索引过了', status=403)
 
     index_excel(excel)
+    record_data_point(request, 'index', excel_id=excel.id)
     return HttpResponseRedirect('/manage/')
 
 
@@ -220,6 +226,8 @@ def unindex(request, excel_id):
         return HttpResponse(u'本来就不在索引中', status=403)
 
     unindex_excel(excel)
+    record_data_point(request, 'unindex', excel_id=excel.id)
+
     return HttpResponseRedirect('/manage/')
 
 
@@ -234,6 +242,7 @@ def download(request, excel_id):
     download = request.GET.get('file', '')
 
     if download:
+        record_data_point(request, 'download', excel_id=excel.id)
         return HttpResponseRedirect(excel.excel_file.url)
     else:
         return render(request, 'download.html', { 'excel_id': excel_id })
@@ -282,6 +291,7 @@ def detail(request, excel_id):
             if row_data['cells']:
                 sheet_data['rows'].append(row_data)
 
+    record_data_point(request, 'detail', excel_id=excel_id)
     return render(request, 'detail.html', excel_data)
 
 
@@ -369,6 +379,9 @@ def check_resource(request):
         return HttpResponse(u'未找到仓库', status=404)
 
     result = check_good(warehouse_code, provider_name, thick, width, weight)
+    record_data_point(request, 'check_good', 
+        warehouse_name=warehouse_name, provider_name=provider_name,
+        thick=thick, width=width, weight=weight)
     return HttpResponse(json.dumps(result, indent=2))
 
 
