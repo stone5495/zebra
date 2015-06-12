@@ -57,7 +57,7 @@
 {% for excel in search_result %}
 
 <h3>
-  <a href="/download/{{ excel.excel.id }}">{{ excel.excel.provider }}</a>
+  <a target="new" href="/download/{{ excel.excel.id }}">{{ excel.excel.provider }}</a>
   <small>
     {{ excel.excel.time | until_now }}
     {{ excel.excel.phone }}
@@ -98,6 +98,8 @@
 {% block script %}
 
 $('#modal_check').on('show.bs.modal', function (event) {
+  {% if user.is_authenticated %}
+
   var button = $(event.relatedTarget);
 
   var provider = button.data('provider');
@@ -112,9 +114,17 @@ $('#modal_check').on('show.bs.modal', function (event) {
   modal.find('#input_thick').val(thick);
   modal.find('#input_width').val(width);
   modal.find('#input_weight').val(weight);
+
+
+  {% else %}
+
+  window.location='/login?next=/search/?q={{q}}';
+
+  {% endif %}
 });
 
 $('#btn_check').click(function () {
+
   var provider = $('#input_provider').val();
   var warehouse = $('#input_warehouse').val();
   var thick = $('#input_thick').val();
@@ -128,10 +138,12 @@ $('#btn_check').click(function () {
     width: width,
     weight: weight
   }).success(function(data) {
+    console.log(data);
     alert(JSON.parse(data).msg);
   }).error(function(data) {
     alert(data.responseText);
   });
+
 });
 
 {% endblock %}

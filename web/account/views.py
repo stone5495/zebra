@@ -5,6 +5,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME, authenticate, login as auth
 from django.contrib.auth.decorators import login_required
 
 from models import ValidationCode
+from ubt.datapoint import record_data_point
 
 import sms
 import random
@@ -35,11 +36,13 @@ def login(request):
         })
 
     auth_login(request, user)
+    record_data_point(request, 'login')
     return HttpResponseRedirect(redirect_to)
 
 
 def logout(request):
     auth_logout(request)
+    record_data_point(request, 'logout')
     return HttpResponseRedirect('/')
 
 

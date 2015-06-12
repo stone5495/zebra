@@ -124,6 +124,16 @@ class Command(BaseCommand):
                     ws.write(c, 9, row['pack_comments2'])
 
             wb.save(file_path)
+            CrawlExcel.objects.create(
+            create_time=time.time(),
+            crawl_user=profile.user,
+            source=8,
+            # source_id=excel_id,
+            filepath=file_path,
+            provider=provider_name,
+            imported=False
+                    )
+
             print provider_name, file_path
 
 

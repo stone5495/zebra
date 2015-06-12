@@ -13,10 +13,12 @@ from excel.models import CrawlExcel
 from account.models import PhoneUserProfile
 from django.contrib.auth.models import User
 import json, math, xlwt
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 
-
-url = 'http://eb.ansteel.cn/sales-web/tpl/p/productSearch'
+url = 'http://eb.ansteel.cn/sales-web/tpl/p/productSearch?org=%E4%B8%8A%E6%B5%B7%E9%9E%8D%E9%92%A2%EF%BC%88%E4%B8%8A%E6%B5%B7%E5%8A%9E%EF%BC%89&synthesize=allOrder'
 
 
 class Command(BaseCommand):
@@ -63,8 +65,8 @@ class Command(BaseCommand):
 
         all_results={}
 
-        for page in range(1, 100):
-            driver.get(url+'?p=%d'%page)
+        for page in range(1, pages+1):
+            driver.get(url+'&p=%d'%page)
             print '第%d页' % page
             #time.sleep(2)
             q = pq(driver.page_source)
@@ -138,4 +140,14 @@ class Command(BaseCommand):
                     ws.write(c, 7, row['special'])
 
             wb.save(file_path)
+            CrawlExcel.objects.create(
+            create_time=time.time(),
+            crawl_user=profile.user,
+            source=6,
+            # source_id=excel_id,
+            filepath=file_path,
+            provider=provider_name,
+            imported=False
+                    )
+
             print provider_name, file_path

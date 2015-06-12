@@ -75,6 +75,7 @@ class Command(BaseCommand):
                     continue
 
                 try:
+                    time.sleep(2)
                     r = requests.get(download_url % excel_id, stream=True)
                     file_name = urllib.unquote(r.headers['content-disposition'].split('=')[1])
 
